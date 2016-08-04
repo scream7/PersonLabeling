@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from Tkinter import *
+import tkSimpleDialog,tkMessageBox
 from PIL import Image, ImageTk, ImageDraw
 from utils import ProcessImages
 
@@ -32,6 +33,11 @@ class APP(object):
         self.prev_btn.bind('<Button-1>',self.prev_click)
         self.next_btn.bind('<Button-1>',self.next_click)
 
+
+    def show_dialog(self):
+        info = tkSimpleDialog.askstring('input age and gender','split by space:\n 13 0 means age 13 male \n 20 1 means age 20 famale')
+        return info
+
     def show_image(self,image_idx):
         self.image_widget = ImageTk.PhotoImage(Image.open(self.images[image_idx]))
         self.label.configure(image = self.image_widget)
@@ -41,8 +47,16 @@ class APP(object):
         self.start_y = event.y
 
     def image_click_release(self, event):
-        self.save_image_info(self.curImageIdx,self.start_x,self.start_y,event.x,event.y,0,0)
-        self.draw_image(self.curImageIdx)
+        info = self.show_dialog()
+        if info:
+            try:
+                age,gender = info.split()
+                int(age),int(gender)
+            except:
+                tkMessageBox.showwarning('error','please input valid info')
+            else:
+                self.save_image_info(self.curImageIdx,self.start_x,self.start_y,event.x,event.y,age,gender)
+                self.draw_image(self.curImageIdx)
     
     def draw_image(self,imgIdx): 
         if self.images_info.get(self.images[imgIdx]) is None:
@@ -52,7 +66,7 @@ class APP(object):
         for x1,y1,x2,y2,age,gender in self.images_info[self.images[imgIdx]]:
             draw.rectangle([(x1,y1),(x2,y2)], outline = (255,0,0))
             draw.text([(x2,y1)],text = str(age))
-            draw.text([(x2 + 10,y1)],text = 'F' if gender == 0 else 'M')
+            draw.text([(x2 + 20,y1)],text = 'F' if gender == '0' else 'M')
         del draw
         self.image_widget = ImageTk.PhotoImage(drawnImage)
         self.label.configure(image = self.image_widget)
@@ -61,7 +75,7 @@ class APP(object):
     def save_image_info(self, imageIdx, x1,y1,x2,y2,age,gender):
         if self.images_info.get(self.images[imageIdx]) is None:
             self.images_info[self.images[imageIdx]] = []
-        self.images_info[self.images[imageIdx]].append((x1,y1,x2,y2,0,0))
+        self.images_info[self.images[imageIdx]].append((x1,y1,x2,y2,age,gender))
 
     def load_image_info(self, imageIdx):
         pass
