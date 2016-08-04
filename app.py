@@ -12,7 +12,8 @@ class APP(object):
         #  self.image = Image.open('test.jpg')
         self.processimages = ProcessImages.ProcessImages('images')
         self.images = self.processimages.GetImageList()
-        self.images_info = dict().fromkeys(self.images,[])
+        #  self.images_info = dict().fromkeys(self.images,[])
+        self.images_info = dict()
         self.curImageIdx = 0
 
         self.label = Label(self.top)
@@ -40,6 +41,7 @@ class APP(object):
         self.start_y = event.y
 
     def image_click_release(self, event):
+        print self.curImageIdx
         self.save_image_info(self.curImageIdx,self.start_x,self.start_y,event.x,event.y,0,0)
         self.draw_image(self.curImageIdx)
     
@@ -54,10 +56,9 @@ class APP(object):
         del drawnImage
 
     def save_image_info(self, imageIdx, x1,y1,x2,y2,age,gender):
-        print self.images_info
-        print self.images[imageIdx]
+        if self.images_info.get(self.images[imageIdx]) is None:
+            self.images_info[self.images[imageIdx]] = []
         self.images_info[self.images[imageIdx]].append((x1,y1,x2,y2,0,0))
-        print self.images_info
 
     def load_image_info(self, imageIdx):
         pass
