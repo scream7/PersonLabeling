@@ -41,15 +41,18 @@ class APP(object):
         self.start_y = event.y
 
     def image_click_release(self, event):
-        print self.curImageIdx
         self.save_image_info(self.curImageIdx,self.start_x,self.start_y,event.x,event.y,0,0)
         self.draw_image(self.curImageIdx)
     
     def draw_image(self,imgIdx): 
+        if self.images_info.get(self.images[imgIdx]) is None:
+            return
         drawnImage = Image.open(self.images[imgIdx])
         draw = ImageDraw.Draw(drawnImage)
         for x1,y1,x2,y2,age,gender in self.images_info[self.images[imgIdx]]:
             draw.rectangle([(x1,y1),(x2,y2)], outline = (255,0,0))
+            draw.text([(x2,y1)],text = str(age))
+            draw.text([(x2 + 10,y1)],text = 'F' if gender == 0 else 'M')
         del draw
         self.image_widget = ImageTk.PhotoImage(drawnImage)
         self.label.configure(image = self.image_widget)
@@ -68,12 +71,14 @@ class APP(object):
         if self.curImageIdx < 0:
             self.curImageIdx += len(self.images)
         self.show_image(self.curImageIdx)
+        self.draw_image(self.curImageIdx)
 
     def next_click(self, event):
         self.curImageIdx += 1
         if self.curImageIdx >= len(self.images):
             self.curImageIdx -= len(self.images)
         self.show_image(self.curImageIdx)
+        self.draw_image(self.curImageIdx)
 
     def clean_label_info(self, event):
         pass
