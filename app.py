@@ -35,7 +35,7 @@ class APP(object):
 
 
     def show_dialog(self):
-        info = tkSimpleDialog.askstring('input age and gender','split by space:\n 13 0 means age 13 male \n 20 1 means age 20 famale')
+        info = tkSimpleDialog.askstring('input age and gender','split by space:\n 13 0 means age 13 male \n 20 1 means age 20 female')
         return info
 
     def show_image(self,image_idx):
