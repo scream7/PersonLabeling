@@ -24,14 +24,17 @@ class APP(object):
         self.label.bind('<ButtonRelease-1>',self.image_click_release)
         self.label.pack()
 
-        self.prev_btn = Button(self.top, text = 'Prev')
-        self.next_btn = Button(self.top, text = 'Next')
+        self.prev_btn = Button(self.top, text = '(P)rev')
+        self.next_btn = Button(self.top, text = '(N)ext')
         self.clean_btn = Button(self.top, text = 'Clean')
         self.prev_btn.pack(side=LEFT)
         self.next_btn.pack(side=RIGHT)
         self.clean_btn.pack()
         self.prev_btn.bind('<Button-1>',self.prev_click)
         self.next_btn.bind('<Button-1>',self.next_click)
+        
+        self.top.bind_all('<p>', self.prev_click)
+        self.top.bind_all('<n>', self.next_click)
 
 
     def show_dialog(self):
