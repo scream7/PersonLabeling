@@ -73,7 +73,7 @@ class APP(object):
         for x1,y1,x2,y2,age,gender in self.images_info[self.images[imgIdx]]:
             draw.rectangle([(x1,y1),(x2,y2)], outline = (255,0,0))
             draw.text([(x2,y1)],text = str(age))
-            draw.text([(x2 + 20,y1)],text = 'F' if gender == '0' else 'M')
+            draw.text([(x2 + 20,y1)],text = 'M' if gender == '0' else 'F')
         del draw
         self.image_widget = ImageTk.PhotoImage(drawnImage)
         self.label.configure(image = self.image_widget)
