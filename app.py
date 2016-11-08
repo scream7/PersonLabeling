@@ -27,11 +27,15 @@ class APP(object):
         self.prev_btn = Button(self.top, text = '(P)rev')
         self.next_btn = Button(self.top, text = '(N)ext')
         self.clean_btn = Button(self.top, text = 'Clean')
+        self.save_btn = Button(self.top, text = 'Save')
         self.prev_btn.pack(side=LEFT)
         self.next_btn.pack(side=RIGHT)
         self.clean_btn.pack()
+        self.save_btn.pack()
         self.prev_btn.bind('<Button-1>',self.prev_click)
         self.next_btn.bind('<Button-1>',self.next_click)
+        self.clean_btn.bind('<Button-1>',self.clean_click)
+        self.save_btn.bind('<Button-1>',self.save_click)
         
         self.top.bind_all('<p>', self.prev_click)
         self.top.bind_all('<n>', self.next_click)
@@ -97,9 +101,17 @@ class APP(object):
         self.show_image(self.curImageIdx)
         self.draw_image(self.curImageIdx)
 
-    def clean_label_info(self, event):
-        pass
-    
+    def clean_click(self,event):
+        self.images_info.pop(self.images[self.curImageIdx],None)
+        self.show_image(self.curImageIdx)
+        self.draw_image(self.curImageIdx)
+
+    def save_click(self,event):
+        with open('info.txt','w') as f:
+            for key in self.images_info:
+                for info in self.images_info[key]:
+                    x1,y1,x2,y2,age,gender = info
+                    print >>f,key,x1,y1,x2,y2,age,gender
 def main():
     obj = APP()
     mainloop()
